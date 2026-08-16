@@ -1,13 +1,19 @@
 {
   "name": "my-ai-personal-trainer",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "MY AI PERSONAL TRAINER",
   "type": "module",
   "scripts": {
     "start": "node server.js"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "openai": "^5.12.2"
+    "jsonwebtoken": "^9.0.2",
+    "openai": "^5.12.2",
+    "pg": "^8.16.3"
   }
-}
