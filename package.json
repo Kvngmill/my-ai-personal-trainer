@@ -1,11 +1,7 @@
-Library
-/
-package.json
-
-
 {
   "name": "my-ai-personal-trainer",
   "version": "2.0.0",
+  "private": true,
   "description": "MY AI PERSONAL TRAINER",
   "type": "module",
   "scripts": {
