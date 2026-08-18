@@ -100,7 +100,15 @@ label{display:block;font-weight:800;font-size:13px;margin:12px 0 6px}input,selec
 </section>
 </main>
 <div id="toast" class="toast"></div>
-<nav class="nav"><button onclick="showScreen('dashboard')" data-s="dashboard">⌂<br>Home</button><button onclick="showScreen('workout')" data-s="workout">🏋<br>Train</button><button onclick="showScreen('progress')" data-s="progress">📈<br>Progress</button><button onclick="showScreen('recovery')" data-s="recovery">♥<br>Recovery</button><button onclick="showScreen('profile')" data-s="profile">⚙<br>Profile</button></nav>
+<button onclick="showScreen('dashboard')" data-s="dashboard">⌂<br>Home</button>
+
+<button onclick="showScreen('workout')" data-s="workout">🏋<br>Train</button>
+
+<button onclick="showScreen('coach')" data-s="coach">🤖<br>AI Coach</button>
+
+<button onclick="showScreen('progress')" data-s="progress">📈<br>Progress</button>
+
+<button onclick="showScreen('profile')" data-s="profile">⚙<br>Profile</button>
 <script>
 const KEY="myAITrainerV1";
 const defaultState={profile:{name:"",age:"",height:"",weight:55,target:"",goal:"gain",exp:"Beginner",equip:"gym"},weights:[],sessions:[],readiness:{sleep:4,sore:5,energy:3}};
