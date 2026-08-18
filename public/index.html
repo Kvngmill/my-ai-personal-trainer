@@ -164,6 +164,253 @@ readinessText.textContent=`Readiness score: ${r}/15. ${r<=7?"Consider reducing i
 nutrition.textContent=state.profile.goal==="gain"?"For muscle gain, aim for regular meals containing protein sources, carbohydrates and calorie-dense nutritious foods. If your weight does not trend upward over several weeks, discuss increasing intake with a qualified professional.":"Build meals around protein-rich foods, vegetables/fruit, carbohydrates and healthy fats.";
 renderWorkout();
 }
+  function render() {
+    // lots of existing code
+}
+
+
+/* =========================
+   MY AI PERSONAL TRAINER
+   AI COACH
+========================= */
+
+let chatHistory = [];
+
+async function sendCoachMessage() {
+
+    const input = document.getElementById("coachInput");
+    const button = document.getElementById("coachButton");
+    const messages = document.getElementById("chatMessages");
+
+    if (!input || !button || !messages) {
+        console.error("AI Coach elements not found");
+        return;
+    }
+
+    const message = input.value.trim();
+
+    if (!message) {
+        alert("Please type a message first.");
+        return;
+    }
+
+    // Show user's message
+    messages.innerHTML += `
+        <div class="exercise">
+            <b>YOU</b>
+            <div style="margin-top:8px;">
+                ${escapeHtml(message)}
+            </div>
+        </div>
+    `;
+
+    // Clear input
+    input.value = "";
+
+    // Disable button while AI responds
+    button.disabled = true;
+    button.textContent = "THINKING...";
+
+    // Show loading message
+    const loading = document.createElement("div");
+
+    loading.id = "aiLoading";
+
+    loading.className = "exercise";
+
+    loading.innerHTML = `
+        <b>🤖 MY AI PERSONAL TRAINER</b>
+        <div class="muted" style="margin-top:8px;">
+            Thinking...
+        </div>
+    `;
+
+    messages.appendChild(loading);
+
+    messages.scrollTop = messages.scrollHeight;
+
+
+    try {
+
+        const response = await fetch("/api/coach", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                profile: {
+
+                    name: state.profile?.name || "",
+
+                    age: state.profile?.age || "",
+
+                    height: state.profile?.height || "",
+
+                    weight: state.profile?.weight || "",
+
+                    goal: state.profile?.goal || "build muscle",
+
+                    experience: state.profile?.exp || "beginner",
+
+                    trainingDays: state.profile?.trainingDays || 4,
+
+                    equipment: state.profile?.equip || ""
+
+                },
+
+                message: message,
+
+                history: chatHistory
+
+            })
+
+        });
+
+
+        const data = await response.json();
+
+
+        // Remove loading message
+        document.getElementById("aiLoading")?.remove();
+
+
+        // Handle server error
+        if (!response.ok) {
+
+            throw new Error(
+                data.error || "The AI coach could not respond."
+            );
+
+        }
+
+
+        // Make sure we received a reply
+        if (!data.reply) {
+
+            throw new Error(
+                "The AI returned an empty response."
+            );
+
+        }
+
+
+        // Display AI response
+        const aiMessage = document.createElement("div");
+
+        aiMessage.className = "exercise";
+
+        aiMessage.innerHTML = `
+            <b>🤖 MY AI PERSONAL TRAINER</b>
+
+            <div
+                class="muted"
+                style="
+                    margin-top:10px;
+                    white-space:pre-wrap;
+                    line-height:1.6;
+                "
+            >
+                ${escapeHtml(data.reply)}
+            </div>
+        `;
+
+        messages.appendChild(aiMessage);
+
+
+        // Save conversation
+        chatHistory.push({
+
+            role: "user",
+
+            content: message
+
+        });
+
+        chatHistory.push({
+
+            role: "assistant",
+
+            content: data.reply
+
+        });
+
+
+        // Keep only the latest 10 messages
+        chatHistory = chatHistory.slice(-10);
+
+
+        // Scroll to newest message
+        messages.scrollTop = messages.scrollHeight;
+
+
+    } catch (error) {
+
+        console.error("AI Coach Error:", error);
+
+
+        document.getElementById("aiLoading")?.remove();
+
+
+        const errorMessage = document.createElement("div");
+
+        errorMessage.className = "exercise";
+
+        errorMessage.innerHTML = `
+            <b>⚠️ AI CONNECTION ERROR</b>
+
+            <div
+                class="muted"
+                style="margin-top:8px;"
+            >
+                ${escapeHtml(error.message)}
+            </div>
+        `;
+
+        messages.appendChild(errorMessage);
+
+        messages.scrollTop = messages.scrollHeight;
+
+
+    } finally {
+
+        // Enable button again
+        button.disabled = false;
+
+        button.textContent = "ASK MY AI COACH";
+
+    }
+
+}
+
+
+/* =========================
+   SECURITY
+========================= */
+
+function escapeHtml(text) {
+
+    return String(text)
+
+        .replaceAll("&", "&amp;")
+
+        .replaceAll("<", "&lt;")
+
+        .replaceAll(">", "&gt;")
+
+        .replaceAll('"', "&quot;")
+
+        .replaceAll("'", "&#039;");
+
+}
+
+render();
+</script>
+</body>
+</html>
 render();
 </script>
 </body></html>
