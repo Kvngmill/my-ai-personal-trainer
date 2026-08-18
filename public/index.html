@@ -59,7 +59,37 @@ label{display:block;font-weight:800;font-size:13px;margin:12px 0 6px}input,selec
 <div class="card"><h2>Weight Check-in</h2><label>Today's weight (kg)</label><input id="checkWeight" type="number" step="0.1"><button class="btn" onclick="addWeight()">SAVE CHECK-IN</button><div id="weightHistory" style="margin-top:15px"></div></div>
 <div class="card"><h2>Progress</h2><div id="progressStats"></div></div>
 </section>
+<section id="coach" class="screen">
 
+  <div class="card">
+    <h2>🤖 AI Coach</h2>
+
+    <p class="muted">
+      Ask your personal trainer anything about your workouts,
+      nutrition, recovery or muscle-building journey.
+    </p>
+
+    <div id="chatMessages"
+         style="max-height:420px;overflow-y:auto;margin:15px 0;">
+    </div>
+
+    <label>Your message</label>
+
+    <textarea
+      id="coachInput"
+      placeholder="Example: Give me a workout for today..."
+    ></textarea>
+
+    <button
+      class="btn"
+      id="coachButton"
+      onclick="sendCoachMessage()">
+      ASK MY AI COACH
+    </button>
+
+  </div>
+
+</section>
 <section id="recovery" class="screen">
 <div class="card"><h2>Daily Readiness</h2><p class="muted">Answer honestly. The coach can reduce today's training when recovery is poor.</p>
 <label>Sleep last night</label><select id="sleep"><option value="1">Under 5 hours</option><option value="2">5–6 hours</option><option value="3">6–7 hours</option><option value="4" selected>7–8 hours</option><option value="5">8+ hours</option></select>
